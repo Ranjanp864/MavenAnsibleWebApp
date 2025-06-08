@@ -8,8 +8,14 @@
         src: "/var/snap/jenkins/4874/workspace/MavenAnsibleWebApp-CICD/target/MavenAnsibleWebApp.war"
         dest: "/opt/tomcat/webapps/MavenAnsibleWebApp.war"
         remote_src: no
+    
+    - name: Stop Tomcat
+      shell: /opt/tomcat/bin/shutdown.sh
+      ignore_errors: yes
 
-    - name: Restart Tomcat
-      systemd:
-        name: tomcat
-        state: restarted
+    - name: Wait for Tomcat to stop
+      pause:
+        seconds: 5
+
+    - name: Start Tomcat
+      shell: /opt/tomcat/bin/startup.sh
